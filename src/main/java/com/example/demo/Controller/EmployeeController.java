@@ -51,5 +51,4 @@ public class EmployeeController {
         employeeRepository.delete(updateEmployee);
         return ResponseEntity.ok(updateEmployee);
     }
-
 }
