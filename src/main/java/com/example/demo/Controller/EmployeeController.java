@@ -1,6 +1,6 @@
 package com.example.demo.Controller;
 
-import com.example.demo.EmployeeRepository;
+import com.example.demo.Repository.EmployeeRepository;
 import com.example.demo.Model.Employee;
 import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +8,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin
+
+
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/employees")
+
 public class EmployeeController {
+    private final EmployeeRepository employeeRepository;
 
-
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
     @GetMapping("/")
     public List<Employee> getAllEmployees() {
 
         return employeeRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
     }
@@ -40,7 +43,6 @@ public class EmployeeController {
         updateEmployee.setFirstName(employee.getFirstName());
         updateEmployee.setSecondName(employee.getSecondName());
         updateEmployee.setEmail(employee.getEmail());
-
         employeeRepository.save(updateEmployee);
         return ResponseEntity.ok(updateEmployee);
     }
